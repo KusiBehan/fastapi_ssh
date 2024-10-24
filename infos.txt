@@ -1,0 +1,4 @@
+Starting APP
+
+uvicorn mainSQLLite:app --host 10.3.32.18 --port 8000
+
