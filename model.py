@@ -18,13 +18,12 @@ class Status(str, Enum):
     
     
 class Category(Base):
-    __tablename__ = "categories"
+    __tablename__ = "Category"
 
     category_id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False, unique=True)  # The name of the category
     description = Column(String)  # Optional field for category description
 
-    tasks = relationship("Task", back_populates="category")  # Establish relationship with Task
 
 # SQLAlchemy User Model
 class User(Base):
@@ -54,30 +53,10 @@ class Task(Base):
     priority = Column(Integer, default=0)
     status = Column(SQLAEnum(Status), nullable=False)  # Correctly using SQLAlchemy Enum
     category_id = Column(Integer, ForeignKey("categories.category_id"))
-    category = relationship("Category", back_populates="tasks")
+    
+# class Category(Base):
+    
 
-# Pydantic User Models
-# class UserBase(BaseModel):
-#     id: int
-#     username: str
-#     email: str
-#     first_name: Optional[str] = None
-#     last_name: Optional[str] = None
-
-# class UserCreate(BaseModel):
-#     username: str
-#     password: str
-#     email: str
-#     first_name: Optional[str] = None
-#     last_name: Optional[str] = None
-
-# class UserResponse(UserBase):
-#     user_id: int
-#     date_created: datetime
-#     last_login: Optional[datetime] = None
-
-#     class Config:
-#         orm_mode = True  # Allow Pydantic to work with SQLAlchemy models
         
 # Pydantic Task Models
 class TaskBase(BaseModel):
@@ -107,7 +86,7 @@ class TaskResponse(TaskBase):
 
 class CategoryResponse(BaseModel):
     category_id: int
-    name: str
+    name: Optional[str]
     description: Optional[str] = None
 
     class Config:

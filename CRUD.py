@@ -1,8 +1,9 @@
 from sqlalchemy.orm import Session
 import model
-import bcrypt
 
-# CRUD for tasks
+
+def get_categories(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(model.Category).offset(skip).limit(limit).all()
 
 def get_tasks(db:Session, skip: int = 0, limit: int = 100):
     return db.query(model.Task).offset(skip).limit(limit).all()
@@ -30,21 +31,11 @@ def update_task(db: Session, task_id: int, task: model.TaskCreate):
     
     db.commit()
     db.refresh(db_task)
-    return db_task
-    
-    
+    return db_task  
 
-# def create_user_todo(db: Session, user_id: int, todo: schemas.TodoCreate):
-#     db_todo = models.Todo(**todo.dict(), user_id=user_id)
-#     db.add(db_todo)
-#     db.commit()
-#     db.refresh(db_todo)
-#     return db_todo
-
-# def get_todos(db: Session, skip: int = 0, limit: int = 100):
-#     return db.query(models.Todo).offset(skip).limit(limit).all()
-
-def hash_password(password: str) -> str:
-    salt = bcrypt.gensalt()
-    hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
-    return hashed.decode('utf-8')    
+def delete_task(db: Session, task_id: int):
+    # tsdk = get_task(db, task_id=task_id)
+    tasks = get_task(db, task_id=task_id)
+    db.delete(tasks)
+    db.commit()
+    return tasks
