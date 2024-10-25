@@ -19,7 +19,7 @@ class Status(str, Enum):
     
 class Category(Base):
     __tablename__ = "Category"
-
+    user_id = Column(Integer,ForeignKey("User.user_id"))
     category_id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False, unique=True)  # The name of the category
     description = Column(String)  # Optional field for category description
@@ -52,7 +52,7 @@ class Task(Base):
     date_completed = Column(DateTime, nullable=True)
     priority = Column(Integer, default=0)
     status = Column(SQLAEnum(Status), nullable=False)  # Correctly using SQLAlchemy Enum
-    category_id = Column(Integer, ForeignKey("categories.category_id"))
+    category_id = Column(Integer, ForeignKey("Category.category_id"))
     
 # class Category(Base):
     
@@ -84,10 +84,16 @@ class TaskResponse(TaskBase):
         
 # class TaskResponsePut(TaskBase):        
 
-class CategoryResponse(BaseModel):
+
+class CategoryBase(BaseModel):
     category_id: int
     name: Optional[str]
     description: Optional[str] = None
 
+
+class CategoryCreate(CategoryBase):
+    pass
+class CategoryResponse(CategoryBase):
+    user_id: int
     class Config:
         orm_mode = True  # Enables compatibility with SQLAlchemy ORM models     
