@@ -11,6 +11,7 @@ def get_category(db:Session, category_id: int):
 def update_category(db:Session, category_id: int, new_category: model.CategoryCreate):
     db_category = get_category(db, category_id)
     
+    
     for key, value in new_category.model_dump().items():
         setattr(db_category, key, value)
     
@@ -52,3 +53,33 @@ def delete_task(db: Session, task_id: int):
     db.delete(tasks)
     db.commit()
     return tasks
+
+
+
+###Doku important
+
+# Looks like the new_category parameter in update_category might be an instance of a Pydantic model (e.g., CategoryCreate) used for request validation and not an instance of a SQLAlchemy model. This would explain the error you’re encountering since SQLAlchemy wouldn’t recognize CategoryCreate as a mapped model.
+
+# Here’s how you can fix the code to correctly update an existing SQLAlchemy Category model instance:
+
+# Modify update_category to ensure it assigns each attribute from new_category individually.
+# Check CategoryCreate to ensure it’s a Pydantic model with the required fields.
+# Here’s the corrected code:
+
+# def update_category(db: Session, category_id: int, new_category: model.CategoryCreate):
+#     db_category = get_category(db, category_id)
+#     if not db_category:
+#         return None  # or raise an exception if the category isn't found
+    
+#     # Update each field manually
+#     for key, value in new_category.dict().items():
+#         setattr(db_category, key, value)
+    
+#     db.commit()
+#     db.refresh(db_category)
+#     return db_category
+# Explanation:
+# The code iterates over each field in new_category (a CategoryCreate instance) and sets it on the existing db_category object.
+# new_category.dict() converts the Pydantic model to a dictionary, making it easier to handle attribute assignments.
+# After setting attributes, db.commit() saves the changes, and db.refresh() reloads the updated object from the database.
+# This should solve the issue by ensuring that the existing SQLAlchemy Category model instance is properly updated with the data from CategoryCreate.
