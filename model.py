@@ -63,10 +63,16 @@ class TaskBase(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None 
     due_date: Optional[datetime] = None
+    category_id: Optional[int] = None
+
+class TaskPut(TaskBase):
+    date_completed: Optional[datetime] = None
+    priority: int
     
+       
 
 class TaskCreate(TaskBase):
-    user_id : int
+    pass
 
 class TaskResponse(TaskBase):
     task_id: int  # Ensure this is the correct field name
@@ -77,22 +83,22 @@ class TaskResponse(TaskBase):
     date_created: datetime
     date_completed: Optional[datetime] = None
     priority: int
-    category_id: Optional[int] = None
 
     class Config:
         orm_mode = True  # Allow Pydantic to work with SQLAlchemy models
         
-# class TaskResponsePut(TaskBase):        
-
+        
 
 class CategoryBase(BaseModel):
     category_id: int
     name: Optional[str]
     description: Optional[str] = None
-
+    
 
 class CategoryCreate(CategoryBase):
     pass
+    class Config:
+        orm_mode = True
 class CategoryResponse(CategoryBase):
     user_id: int
     class Config:
