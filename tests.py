@@ -13,7 +13,7 @@ class TestSample(unittest.TestCase):
         # Set up the TestClient and mock token
         self.client = TestClient(app)
         # Update every 30 minutes
-        self.mock_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJCZWhhbiIsImV4cCI6MTczMDY3MzMyMH0.TkGOzHKqdA2z3CJmMfsLv4xPfysIHN490ye71K7n8Bg"  # This is your mocked token value
+        self.mock_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJCZWhhbiIsImV4cCI6MTczMDk2NjU3Mn0.7w49sJ8a7ON_rCWpTd6C5nMEBk2oEDS31thz-E7DDbY"  # This is your mocked token value
     
     #Test 200 Response Code mit auth
     @patch("mainMySQL.verify_token")

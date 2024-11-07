@@ -6,14 +6,15 @@ import uvicorn
 import CRUD 
 from database import SessionLocal
 from model import TaskResponse, TaskCreate, CategoryResponse, CategoryCreate, TaskPut
-#Activate dev command for dev and test line for testing the app
-# from auth import verify_token //dev
-from auth_test import verify_token #//test
+# Activate dev command for dev and test line for testing the app
+from auth import verify_token #dev
+# from auth_test import verify_token #//test
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import ValidationError
 
 app = FastAPI()
 
+# CORS allowing
 origins = ["*"]
 
 app.add_middleware(
@@ -23,7 +24,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+# Dependency Injection
 def get_db():
     db = SessionLocal()
     try:
@@ -102,7 +103,7 @@ def update_category(category_id: int, category: CategoryCreate, db: Session = De
     try:
         updated_category = CRUD.update_category(db=db, category_id=category_id, new_category=category)
         if updated_category is None:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found") 
         return updated_category
     except SQLAlchemyError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error") from e

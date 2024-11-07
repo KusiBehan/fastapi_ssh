@@ -54,7 +54,6 @@ class Task(Base):
     status = Column(SQLAEnum(Status), nullable=False)  # Correctly using SQLAlchemy Enum
     category_id = Column(Integer, ForeignKey("Category.category_id"))
     
-# class Category(Base):
     
 
         
@@ -66,8 +65,7 @@ class TaskBase(BaseModel):
     category_id: Optional[int] = None
 
 class TaskPut(TaskBase):
-    date_completed: Optional[datetime] = None
-    priority: int
+    pass
     
        
 
